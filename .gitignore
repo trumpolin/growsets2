@@ -1,0 +1,4 @@
+*.svg
+*.ico
+
+frontend/package-lock.json
