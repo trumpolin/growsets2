@@ -17,7 +17,11 @@ class BackendClient
     {
         $baseUri = $baseUri ?: (string) (Configuration::get(Growset::CONFIG_BACKEND_URL) ?: getenv('GROWSET_BACKEND_URL'));
         $this->token = $token ?: (string) (Configuration::get(Growset::CONFIG_TOKEN) ?: getenv('GROWSET_BACKEND_TOKEN'));
-        $this->client = new Client(['base_uri' => $baseUri]);
+        $this->client = new Client([
+            'base_uri' => $baseUri,
+            'timeout' => 5,
+            'connect_timeout' => 5,
+        ]);
         $this->retries = $retries;
     }
 
@@ -39,17 +43,17 @@ class BackendClient
         $attempts = 0;
         $delay = 1;
 
-        start:
-        try {
-            return $this->client->request($method, $uri, $options);
-        } catch (RequestException $e) {
-            $attempts++;
-            if ($attempts > $this->retries) {
-                throw $e;
+        while (true) {
+            try {
+                return $this->client->request($method, $uri, $options);
+            } catch (RequestException $e) {
+                $attempts++;
+                if ($attempts > $this->retries) {
+                    throw $e;
+                }
+                sleep($delay);
+                $delay *= 2;
             }
-            sleep($delay);
-            $delay *= 2;
-            goto start;
         }
     }
 }
