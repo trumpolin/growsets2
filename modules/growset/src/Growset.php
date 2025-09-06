@@ -32,7 +32,9 @@ class Growset extends Module
         return parent::install()
             && $this->registerHook('actionProductAdd')
             && $this->registerHook('actionProductUpdate')
-            && $this->registerHook('actionProductDelete');
+            && $this->registerHook('actionProductDelete')
+            && $this->registerHook('displayHeader')
+            && $this->registerHook('displayHome');
     }
 
     public function uninstall()
@@ -120,6 +122,28 @@ class Growset extends Module
     public function hookActionProductDelete($params)
     {
         $this->clearProductCache();
+    }
+
+    public function hookDisplayHeader()
+    {
+        if (isset($this->context->controller)) {
+            $this->context->controller->registerStylesheet(
+                'growset-front',
+                'modules/' . $this->name . '/assets/app.css',
+                ['media' => 'all', 'priority' => 150]
+            );
+
+            $this->context->controller->registerJavascript(
+                'growset-front',
+                'modules/' . $this->name . '/assets/app.js',
+                ['position' => 'bottom', 'priority' => 150]
+            );
+        }
+    }
+
+    public function hookDisplayHome()
+    {
+        return '<div id="growset-app"></div>';
     }
 }
 

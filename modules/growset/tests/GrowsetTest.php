@@ -55,4 +55,12 @@ class GrowsetTest extends TestCase
 
         $this->assertSame(['growset_products'], Cache::$keys);
     }
+
+    public function testDisplayHomeRendersContainer(): void
+    {
+        $module = new Growset();
+        $output = $module->hookDisplayHome([]);
+
+        $this->assertStringContainsString('id="growset-app"', $output);
+    }
 }
