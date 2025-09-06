@@ -19,11 +19,13 @@ export async function fetchCategoryArticles(
   signal?: AbortSignal,
   relatedId?: string,
 ): Promise<Pagination<Article>> {
-  const url = new URL(`${API_BASE}/categories/${category}/articles`);
-  url.searchParams.set("page", String(page));
-  url.searchParams.set("limit", String(limit));
-  if (relatedId) url.searchParams.set("related", relatedId);
-  const res = await fetch(url.toString(), { signal });
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+  });
+  if (relatedId) params.set("related", relatedId);
+  const url = `${API_BASE}/categories/${category}/articles?${params.toString()}`;
+  const res = await fetch(url, { signal });
   if (!res.ok) throw new Error("Failed to fetch category articles");
   return res.json();
 }
