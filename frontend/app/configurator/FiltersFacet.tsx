@@ -8,19 +8,15 @@ export default function FiltersFacet() {
   const { selections, setSelection } = useSelection();
   const category = selections.category ?? "default";
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ["filterOptions", category],
-    queryFn: ({ pageParam = 1, signal }) =>
-      fetchFilterOptions("default", pageParam, 10, signal),
-    getNextPageParam: (lastPage) =>
-      lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
-    initialPageParam: 1,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["filterOptions", category],
+      queryFn: ({ pageParam = 1, signal }) =>
+        fetchFilterOptions(category, pageParam, 10, signal),
+      getNextPageParam: (lastPage) =>
+        lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
+      initialPageParam: 1,
+    });
 
   const options = data?.pages.flatMap((p) => p.items) ?? [];
 
@@ -49,4 +45,3 @@ export default function FiltersFacet() {
     </FacetPanel>
   );
 }
-
