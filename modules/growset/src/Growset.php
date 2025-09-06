@@ -95,9 +95,9 @@ class Growset extends Module
         $helper->token = \Tools::getAdminTokenLite('AdminModules');
         $helper->default_form_language = $defaultLang;
 
-        $helper->fields_value[self::CONFIG_CATEGORY_IDS] = Configuration::get(self::CONFIG_CATEGORY_IDS);
-        $helper->fields_value[self::CONFIG_BACKEND_URL] = Configuration::get(self::CONFIG_BACKEND_URL, getenv('GROWSET_BACKEND_URL'));
-        $helper->fields_value[self::CONFIG_TOKEN] = Configuration::get(self::CONFIG_TOKEN, getenv('GROWSET_BACKEND_TOKEN'));
+        $helper->fields_value[self::CONFIG_CATEGORY_IDS] = Configuration::get(self::CONFIG_CATEGORY_IDS) ?: getenv('GROWSET_CATEGORY_IDS');
+        $helper->fields_value[self::CONFIG_BACKEND_URL] = Configuration::get(self::CONFIG_BACKEND_URL) ?: getenv('GROWSET_BACKEND_URL');
+        $helper->fields_value[self::CONFIG_TOKEN] = Configuration::get(self::CONFIG_TOKEN) ?: getenv('GROWSET_BACKEND_TOKEN');
 
         return $helper->generateForm($fieldsForm);
     }
