@@ -6,22 +6,19 @@ import { useSelection } from "@/components/SelectionProvider";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function CategoryFacet() {
-  const { setSelection } = useSelection();
+  const { selections, setSelection } = useSelection();
+  const category = selections.category ?? "default";
   const queryClient = useQueryClient();
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ["categoryArticles", "default"],
-    queryFn: ({ pageParam = 1, signal }) =>
-      fetchCategoryArticles("default", pageParam, 10, signal),
-    getNextPageParam: (lastPage) =>
-      lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
-    initialPageParam: 1,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["categoryArticles", category],
+      queryFn: ({ pageParam = 1, signal }) =>
+        fetchCategoryArticles(category, pageParam, 10, signal),
+      getNextPageParam: (lastPage) =>
+        lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
+      initialPageParam: 1,
+    });
 
   const articles = data?.pages.flatMap((p) => p.items) ?? [];
 
@@ -51,4 +48,3 @@ export default function CategoryFacet() {
     </FacetPanel>
   );
 }
-
