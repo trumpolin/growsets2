@@ -10,6 +10,12 @@
 1. `cd frontend`
 2. `npm install`
 
+### Docker images
+The `docker-compose.yml` configuration uses specific image tags:
+
+- `prestashop/prestashop:8.1`
+- `node:18.20`
+
 ## Build
 
 - `cd frontend && npm run build:export`

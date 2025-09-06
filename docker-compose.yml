@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   prestashop:
-    image: prestashop/prestashop:latest
+    image: prestashop/prestashop:8.1
     ports:
       - "8080:80"
     environment:
@@ -25,7 +25,7 @@ services:
       - db_data:/var/lib/mysql
 
   frontend:
-    image: node:18
+    image: node:18.20
     working_dir: /app
     volumes:
       - ./frontend:/app
