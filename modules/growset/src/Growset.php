@@ -102,19 +102,24 @@ class Growset extends Module
         return $helper->generateForm($fieldsForm);
     }
 
-    public function hookActionProductAdd($params)
+    private function clearProductCache(): void
     {
         Cache::clean('growset_products');
+    }
+
+    public function hookActionProductAdd($params)
+    {
+        $this->clearProductCache();
     }
 
     public function hookActionProductUpdate($params)
     {
-        Cache::clean('growset_products');
+        $this->clearProductCache();
     }
 
     public function hookActionProductDelete($params)
     {
-        Cache::clean('growset_products');
+        $this->clearProductCache();
     }
 }
 
