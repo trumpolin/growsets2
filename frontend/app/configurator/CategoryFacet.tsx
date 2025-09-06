@@ -7,7 +7,8 @@ import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function CategoryFacet() {
   const { selections, setSelection } = useSelection();
-  const category = selections.category ?? "default";
+  const selected = selections.category;
+  const category = selected ?? "default";
   const queryClient = useQueryClient();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -29,8 +30,9 @@ export default function CategoryFacet() {
           <ArticleListItem
             key={article.id}
             article={article}
-            onSelect={(id) => {
-              setSelection("category", id);
+            selected={article.id === selected}
+            onToggle={(id) => {
+              setSelection("category", id === selected ? null : id);
               queryClient.invalidateQueries({ queryKey: ["filterOptions"] });
             }}
           />
