@@ -6,9 +6,12 @@ use Cache;
 use Growset\Service\ProductProvider;
 use ModuleFrontController;
 use Tools;
+use Growset\Controller\Api\JsonResponseTrait;
 
 class FiltersController extends ModuleFrontController
 {
+    use JsonResponseTrait;
+
     public $ssl = true;
 
     public function initContent()
@@ -26,29 +29,15 @@ class FiltersController extends ModuleFrontController
         $cacheKey = sprintf('growset_filters_%d_%d', $page, $limit);
         $ttl = 300;
 
-        $content = Cache::retrieve($cacheKey);
-        if (!$content) {
+        $this->jsonResponse($cacheKey, $ttl, function () use ($page, $limit) {
             $client = new ProductProvider();
             $data = $client->getFilters($page, $limit);
-            $content = json_encode([
+            return [
                 'page' => $page,
                 'limit' => $limit,
                 'data' => $data,
-            ]);
-            Cache::store($cacheKey, $content, $ttl);
-        }
-
-        $etag = md5($content);
-        header('Content-Type: application/json');
-        header('Cache-Control: max-age=' . $ttl);
-        header('ETag: ' . $etag);
-        if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH']) === $etag) {
-            header('HTTP/1.1 304 Not Modified');
-            exit;
-        }
-
-        echo $content;
-        exit;
+            ];
+        });
     }
 }
 
