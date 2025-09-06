@@ -17,6 +17,12 @@ class ProductsController extends ModuleFrontController
 
         $page = (int) Tools::getValue('page', 1);
         $limit = (int) Tools::getValue('limit', 20);
+        if ($page < 1 || $limit < 1 || $limit > 100) {
+            header('Content-Type: application/json');
+            header('HTTP/1.1 400 Bad Request');
+            echo json_encode(['error' => 'Invalid page or limit']);
+            exit;
+        }
         $cacheKey = sprintf('growset_products_%d_%d', $page, $limit);
         $ttl = 300;
 
