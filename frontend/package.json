@@ -7,10 +7,10 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "export": "next export",
-    "module": "npm run build && npm run export && cp -r out ../modules/growset/assets",
-    "build:export": "npm run build && npm run export && cp -r out ../modules/growset/assets",
-    "prepare": "cd .. && husky install"
+    "module": "npm run build && cp -r out ../modules/growset/assets",
+    "build:export": "npm run build && cp -r out ../modules/growset/assets",
+    "prepare": "cd .. && husky install",
+    "test": "jest"
   },
   "dependencies": {
     "next": "15.5.2",
@@ -31,7 +31,13 @@
     "lint-staged": "^15",
     "prettier": "^3",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "jest": "^29",
+    "ts-jest": "^29",
+    "@types/jest": "^29",
+    "@testing-library/react": "^16",
+    "@testing-library/jest-dom": "^6",
+    "jest-environment-jsdom": "^29"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
