@@ -3,7 +3,7 @@
 namespace Growset\Controller\Api;
 
 use Cache;
-use Growset\Service\BackendClient;
+use Growset\Service\ProductProvider;
 use ModuleFrontController;
 use Tools;
 
@@ -22,7 +22,7 @@ class FiltersController extends ModuleFrontController
 
         $content = Cache::retrieve($cacheKey);
         if (!$content) {
-            $client = new BackendClient();
+            $client = new ProductProvider();
             $data = $client->getFilters($page, $limit);
             $content = json_encode([
                 'page' => $page,
