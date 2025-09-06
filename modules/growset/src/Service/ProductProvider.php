@@ -25,7 +25,7 @@ class ProductProvider
         return Product::getProducts($idLang, $start, $limit, 'id_product', 'ASC');
     }
 
-    public function getFilters(int $page, int $limit): array
+    public function getFilters(string $facet, int $page, int $limit): array
     {
         $idLang = 1;
         if (class_exists('Context')) {
@@ -37,16 +37,35 @@ class ProductProvider
             $idLang = (int) Configuration::get('PS_LANG_DEFAULT', 1);
         }
 
-        $features = Feature::getFeatures($idLang);
-        $attributes = AttributeGroup::getAttributesGroups($idLang);
+        switch ($facet) {
+            case 'attributes':
+                $raw = AttributeGroup::getAttributesGroups($idLang);
+                $valueKey = 'id_attribute_group';
+                $labelKey = 'name';
+                break;
+            case 'features':
+            default:
+                $raw = Feature::getFeatures($idLang);
+                $valueKey = 'id_feature';
+                $labelKey = 'name';
+                break;
+        }
 
+        $totalPages = (int) ceil(count($raw) / $limit);
         $offset = max(0, ($page - 1) * $limit);
-        $features = array_slice($features, $offset, $limit);
-        $attributes = array_slice($attributes, $offset, $limit);
+        $raw = array_slice($raw, $offset, $limit);
+
+        $items = array_map(function ($row) use ($valueKey, $labelKey) {
+            return [
+                'value' => (string) $row[$valueKey],
+                'label' => $row[$labelKey],
+            ];
+        }, $raw);
 
         return [
-            'features' => $features,
-            'attributes' => $attributes,
+            'items' => $items,
+            'page' => $page,
+            'totalPages' => $totalPages,
         ];
     }
 }

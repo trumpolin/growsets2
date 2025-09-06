@@ -15,20 +15,17 @@ class FiltersController extends ModuleFrontController
     {
         parent::initContent();
 
+        $facet = (string) Tools::getValue('facet', 'features');
         $page = (int) Tools::getValue('page', 1);
         $limit = (int) Tools::getValue('limit', 20);
-        $cacheKey = sprintf('growset_filters_%d_%d', $page, $limit);
+        $cacheKey = sprintf('growset_filters_%s_%d_%d', $facet, $page, $limit);
         $ttl = 300;
 
         $content = Cache::retrieve($cacheKey);
         if (!$content) {
             $client = new ProductProvider();
-            $data = $client->getFilters($page, $limit);
-            $content = json_encode([
-                'page' => $page,
-                'limit' => $limit,
-                'data' => $data,
-            ]);
+            $data = $client->getFilters($facet, $page, $limit);
+            $content = json_encode($data);
             Cache::store($cacheKey, $content, $ttl);
         }
 
