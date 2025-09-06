@@ -1,9 +1,4 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import useSWR from "swr";
-
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export interface Article {
   id: string;
@@ -17,15 +12,27 @@ export interface Pagination<T> {
   totalPages: number;
 }
 
-export function fetchCategoryArticles(category: string, page = 1) {
-  return useSWR<Pagination<Article>>(
-    `${API_BASE}/categories/${category}/articles?page=${page}`,
-    fetcher
+export async function fetchCategoryArticles(
+  category: string,
+  page = 1,
+  limit = 10,
+  signal?: AbortSignal
+): Promise<Pagination<Article>> {
+  const res = await fetch(
+    `${API_BASE}/categories/${category}/articles?page=${page}&limit=${limit}`,
+    { signal }
   );
+  if (!res.ok) throw new Error("Failed to fetch category articles");
+  return res.json();
 }
 
-export function fetchArticle(id: string) {
-  return useSWR<Article>(id ? `${API_BASE}/articles/${id}` : null, fetcher);
+export async function fetchArticle(
+  id: string,
+  signal?: AbortSignal
+): Promise<Article> {
+  const res = await fetch(`${API_BASE}/articles/${id}`, { signal });
+  if (!res.ok) throw new Error("Failed to fetch article");
+  return res.json();
 }
 
 export interface FilterOption {
@@ -33,9 +40,17 @@ export interface FilterOption {
   label: string;
 }
 
-export function fetchFilterOptions(facet: string, page = 1) {
-  return useSWR<Pagination<FilterOption>>(
-    `${API_BASE}/filters/${facet}?page=${page}`,
-    fetcher
+export async function fetchFilterOptions(
+  facet: string,
+  page = 1,
+  limit = 10,
+  signal?: AbortSignal
+): Promise<Pagination<FilterOption>> {
+  const res = await fetch(
+    `${API_BASE}/filters/${facet}?page=${page}&limit=${limit}`,
+    { signal }
   );
+  if (!res.ok) throw new Error("Failed to fetch filter options");
+  return res.json();
 }
+
