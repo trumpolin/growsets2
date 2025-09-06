@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  prestashop:
+    image: prestashop/prestashop:latest
+    ports:
+      - "8080:80"
+    environment:
+      - DB_SERVER=mariadb
+      - DB_USER=prestashop
+      - DB_PASSWORD=prestashop
+      - DB_NAME=prestashop
+    volumes:
+      - ./modules/growset:/var/www/html/modules/growset
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:10.5
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=prestashop
+      - MYSQL_USER=prestashop
+      - MYSQL_PASSWORD=prestashop
+    volumes:
+      - db_data:/var/lib/mysql
+
+  frontend:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    command: ["npm", "start"]
+
+volumes:
+  db_data:
