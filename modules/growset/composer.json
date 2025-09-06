@@ -1,0 +1,13 @@
+{
+    "name": "growset/module",
+    "description": "Growset integration module",
+    "type": "prestashop-module",
+    "require": {
+        "guzzlehttp/guzzle": "^7.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Growset\\": "src/"
+        }
+    }
+}
