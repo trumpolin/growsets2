@@ -16,19 +16,23 @@ export async function fetchCategoryArticles(
   category: string,
   page = 1,
   limit = 10,
-  signal?: AbortSignal
+  signal?: AbortSignal,
+  relatedId?: string,
 ): Promise<Pagination<Article>> {
-  const res = await fetch(
-    `${API_BASE}/categories/${category}/articles?page=${page}&limit=${limit}`,
-    { signal }
-  );
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+  });
+  if (relatedId) params.set("related", relatedId);
+  const url = `${API_BASE}/categories/${category}/articles?${params.toString()}`;
+  const res = await fetch(url, { signal });
   if (!res.ok) throw new Error("Failed to fetch category articles");
   return res.json();
 }
 
 export async function fetchArticle(
   id: string,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ): Promise<Article> {
   const res = await fetch(`${API_BASE}/articles/${id}`, { signal });
   if (!res.ok) throw new Error("Failed to fetch article");
@@ -44,13 +48,12 @@ export async function fetchFilterOptions(
   facet: string,
   page = 1,
   limit = 10,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ): Promise<Pagination<FilterOption>> {
   const res = await fetch(
     `${API_BASE}/filters/${facet}?page=${page}&limit=${limit}`,
-    { signal }
+    { signal },
   );
   if (!res.ok) throw new Error("Failed to fetch filter options");
   return res.json();
 }
-

@@ -3,19 +3,17 @@ import { fetchCategoryArticles } from "@/lib/api";
 import ArticleListItem from "@/components/ArticleListItem";
 import FacetPanel from "@/components/FacetPanel";
 import { useSelection } from "@/components/SelectionProvider";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
-export default function CategoryFacet() {
+export default function FanFacet() {
   const { selections, setSelection } = useSelection();
-  const selected = selections.category;
-  const category = selected ?? "default";
-  const queryClient = useQueryClient();
+  const selected = selections.fan;
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ["categoryArticles", category],
+      queryKey: ["fanArticles"],
       queryFn: ({ pageParam = 1, signal }) =>
-        fetchCategoryArticles(category, pageParam, 10, signal),
+        fetchCategoryArticles("fan", pageParam, 10, signal),
       getNextPageParam: (lastPage) =>
         lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
       initialPageParam: 1,
@@ -24,17 +22,14 @@ export default function CategoryFacet() {
   const articles = data?.pages.flatMap((p) => p.items) ?? [];
 
   return (
-    <FacetPanel title="Articles">
+    <FacetPanel title="Lüfter">
       <ul className="space-y-2">
         {articles.map((article) => (
           <ArticleListItem
             key={article.id}
             article={article}
             selected={article.id === selected}
-            onToggle={(id) => {
-              setSelection("category", id === selected ? null : id);
-              queryClient.invalidateQueries({ queryKey: ["filterOptions"] });
-            }}
+            onToggle={(id) => setSelection("fan", id === selected ? null : id)}
           />
         ))}
       </ul>
