@@ -13,6 +13,3 @@ spl_autoload_register(function ($class) {
     }
 });
 
-if (file_exists('/usr/share/php/GuzzleHttp/autoload.php')) {
-    require_once '/usr/share/php/GuzzleHttp/autoload.php';
-}
