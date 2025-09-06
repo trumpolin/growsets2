@@ -1,2 +1,4 @@
 #!/bin/sh
+set -e
+cd modules/growset && composer test && cd ../..
 cd frontend && npx lint-staged
