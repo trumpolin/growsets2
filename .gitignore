@@ -1,4 +1,7 @@
 *.svg
 *.ico
 
-frontend/package-lock.json
+frontend/node_modules/
+frontend/out/
+modules/growset/vendor/
+modules/growset/assets/
