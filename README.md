@@ -9,6 +9,7 @@
 ### Frontend
 1. `cd frontend`
 2. `npm install`
+3. Set `NEXT_PUBLIC_API_BASE` in `.env` to your backend API base URL.
 
 ### Docker images
 The `docker-compose.yml` configuration uses specific image tags:
