@@ -6,6 +6,7 @@ use Product;
 use Feature;
 use AttributeGroup;
 use Configuration;
+use Growset\Growset;
 
 class ProductProvider
 {
@@ -21,8 +22,28 @@ class ProductProvider
             $idLang = (int) Configuration::get('PS_LANG_DEFAULT', 1);
         }
 
+        $rawIds = '';
+        if (class_exists('Configuration')) {
+            $rawIds = (string) Configuration::get(Growset::CONFIG_CATEGORY_IDS);
+        }
+        if ($rawIds === '') {
+            $rawIds = (string) getenv('GROWSET_CATEGORY_IDS');
+        }
+        $categoryIds = array_values(array_filter(array_map('intval', preg_split('/\s*,\s*/', (string) $rawIds, -1, PREG_SPLIT_NO_EMPTY))));
+
+        if (empty($categoryIds)) {
+            $start = max(0, ($page - 1) * $limit);
+            return Product::getProducts($idLang, $start, $limit, 'id_product', 'ASC');
+        }
+
+        $products = Product::getProducts($idLang, 0, 0, 'id_product', 'ASC');
+        $products = array_values(array_filter($products, function (array $product) use ($categoryIds) {
+            $categories = Product::getProductCategories((int) $product['id_product']);
+            return (bool) array_intersect($categoryIds, $categories);
+        }));
+
         $start = max(0, ($page - 1) * $limit);
-        return Product::getProducts($idLang, $start, $limit, 'id_product', 'ASC');
+        return array_slice($products, $start, $limit);
     }
 
     public function getFilters(int $page, int $limit): array
