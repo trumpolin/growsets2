@@ -12,9 +12,6 @@ class Growset2 extends Module
     public const CONFIG_CATEGORY_IDS = 'GROWSET2_CATEGORY_IDS';
     public const CONFIG_BACKEND_URL = 'GROWSET2_BACKEND_URL';
     public const CONFIG_TOKEN = 'GROWSET2_BACKEND_TOKEN';
-    public const LEGACY_CONFIG_CATEGORY_IDS = 'GROWSET_CATEGORY_IDS';
-    public const LEGACY_CONFIG_BACKEND_URL = 'GROWSET_BACKEND_URL';
-    public const LEGACY_CONFIG_TOKEN = 'GROWSET_BACKEND_TOKEN';
 
     public function __construct()
     {
@@ -25,8 +22,6 @@ class Growset2 extends Module
         $this->need_instance = 0;
 
         parent::__construct();
-
-        $this->migrateLegacyConfiguration();
 
         $this->displayName = $this->l('Growset2');
         $this->description = $this->l('Synchronizes products with the Growset2 backend.');
@@ -45,9 +40,6 @@ class Growset2 extends Module
         Configuration::deleteByName(self::CONFIG_CATEGORY_IDS);
         Configuration::deleteByName(self::CONFIG_BACKEND_URL);
         Configuration::deleteByName(self::CONFIG_TOKEN);
-        Configuration::deleteByName(self::LEGACY_CONFIG_CATEGORY_IDS);
-        Configuration::deleteByName(self::LEGACY_CONFIG_BACKEND_URL);
-        Configuration::deleteByName(self::LEGACY_CONFIG_TOKEN);
 
         return parent::uninstall();
     }
@@ -59,9 +51,6 @@ class Growset2 extends Module
             Configuration::updateValue(self::CONFIG_CATEGORY_IDS, Tools::getValue(self::CONFIG_CATEGORY_IDS));
             Configuration::updateValue(self::CONFIG_BACKEND_URL, Tools::getValue(self::CONFIG_BACKEND_URL));
             Configuration::updateValue(self::CONFIG_TOKEN, Tools::getValue(self::CONFIG_TOKEN));
-            Configuration::deleteByName(self::LEGACY_CONFIG_CATEGORY_IDS);
-            Configuration::deleteByName(self::LEGACY_CONFIG_BACKEND_URL);
-            Configuration::deleteByName(self::LEGACY_CONFIG_TOKEN);
             $output .= $this->displayConfirmation($this->l('Settings updated'));
         }
 
@@ -108,48 +97,24 @@ class Growset2 extends Module
 
         $helper->fields_value[self::CONFIG_CATEGORY_IDS] = $this->getConfigValue(
             self::CONFIG_CATEGORY_IDS,
-            self::LEGACY_CONFIG_CATEGORY_IDS,
-            'GROWSET2_CATEGORY_IDS',
-            'GROWSET_CATEGORY_IDS'
+            'GROWSET2_CATEGORY_IDS'
         );
         $helper->fields_value[self::CONFIG_BACKEND_URL] = $this->getConfigValue(
             self::CONFIG_BACKEND_URL,
-            self::LEGACY_CONFIG_BACKEND_URL,
-            'GROWSET2_BACKEND_URL',
-            'GROWSET_BACKEND_URL'
+            'GROWSET2_BACKEND_URL'
         );
         $helper->fields_value[self::CONFIG_TOKEN] = $this->getConfigValue(
             self::CONFIG_TOKEN,
-            self::LEGACY_CONFIG_TOKEN,
-            'GROWSET2_BACKEND_TOKEN',
-            'GROWSET_BACKEND_TOKEN'
+            'GROWSET2_BACKEND_TOKEN'
         );
 
         return $helper->generateForm($fieldsForm);
     }
 
-    private function migrateLegacyConfiguration(): void
-    {
-        if (!class_exists('Configuration')) {
-            return;
-        }
-        if (!Configuration::get(self::CONFIG_CATEGORY_IDS) && Configuration::get(self::LEGACY_CONFIG_CATEGORY_IDS)) {
-            Configuration::updateValue(self::CONFIG_CATEGORY_IDS, Configuration::get(self::LEGACY_CONFIG_CATEGORY_IDS));
-        }
-        if (!Configuration::get(self::CONFIG_BACKEND_URL) && Configuration::get(self::LEGACY_CONFIG_BACKEND_URL)) {
-            Configuration::updateValue(self::CONFIG_BACKEND_URL, Configuration::get(self::LEGACY_CONFIG_BACKEND_URL));
-        }
-        if (!Configuration::get(self::CONFIG_TOKEN) && Configuration::get(self::LEGACY_CONFIG_TOKEN)) {
-            Configuration::updateValue(self::CONFIG_TOKEN, Configuration::get(self::LEGACY_CONFIG_TOKEN));
-        }
-    }
-
-    private function getConfigValue(string $key, string $legacyKey, string $envKey, string $legacyEnvKey)
+    private function getConfigValue(string $key, string $envKey)
     {
         return Configuration::get($key)
-            ?: Configuration::get($legacyKey)
-            ?: getenv($envKey)
-            ?: getenv($legacyEnvKey);
+            ?: getenv($envKey);
     }
 
     private function clearProductCache(): void
