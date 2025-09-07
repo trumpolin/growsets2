@@ -5,12 +5,13 @@ namespace Growset2\Controller\Api;
 use Cache;
 use Growset2\Service\ProductProvider;
 use ModuleFrontController;
-use Tools;
 use Growset2\Controller\Api\JsonResponseTrait;
+use Growset2\Controller\Api\PaginationValidatorTrait;
 
 class ProductsController extends ModuleFrontController
 {
     use JsonResponseTrait;
+    use PaginationValidatorTrait;
 
     public $ssl = true;
 
@@ -18,14 +19,7 @@ class ProductsController extends ModuleFrontController
     {
         parent::initContent();
 
-        $page = (int) Tools::getValue('page', 1);
-        $limit = (int) Tools::getValue('limit', 20);
-        if ($page < 1 || $limit < 1 || $limit > 100) {
-            header('Content-Type: application/json');
-            header('HTTP/1.1 400 Bad Request');
-            echo json_encode(['error' => 'Invalid page or limit']);
-            exit;
-        }
+        list($page, $limit) = $this->validatePagination();
         $cacheKey = sprintf('growset2_products_%d_%d', $page, $limit);
         $ttl = 300;
 
