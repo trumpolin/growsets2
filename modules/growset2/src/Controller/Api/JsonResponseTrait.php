@@ -3,6 +3,7 @@
 namespace Growset2\Controller\Api;
 
 use Cache;
+use JsonException;
 
 trait JsonResponseTrait
 {
@@ -11,8 +12,16 @@ trait JsonResponseTrait
         $content = Cache::retrieve($cacheKey);
         if (!$content) {
             $data = $callback();
-            $content = json_encode($data);
-            Cache::store($cacheKey, $content, $ttl);
+            try {
+                $content = json_encode($data, JSON_THROW_ON_ERROR);
+                Cache::store($cacheKey, $content, $ttl);
+            } catch (JsonException $e) {
+                error_log($e->getMessage());
+                http_response_code(500);
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'Internal Server Error']);
+                exit;
+            }
         }
 
         $etag = md5($content);
