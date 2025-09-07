@@ -1,6 +1,6 @@
 <?php
 
-use Growset\Service\ProductProvider;
+use Growset2\Service\ProductProvider;
 use PHPUnit\Framework\TestCase;
 
 class Product

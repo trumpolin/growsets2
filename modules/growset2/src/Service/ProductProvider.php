@@ -1,12 +1,12 @@
 <?php
 
-namespace Growset\Service;
+namespace Growset2\Service;
 
 use Product;
 use Feature;
 use AttributeGroup;
 use Configuration;
-use Growset\Growset;
+use Growset2\Growset2;
 
 class ProductProvider
 {
@@ -24,10 +24,16 @@ class ProductProvider
 
         $rawIds = '';
         if (class_exists('Configuration')) {
-            $rawIds = (string) Configuration::get(Growset::CONFIG_CATEGORY_IDS);
+            $rawIds = (string) (
+                Configuration::get(Growset2::CONFIG_CATEGORY_IDS)
+                ?: Configuration::get(Growset2::LEGACY_CONFIG_CATEGORY_IDS)
+            );
         }
         if ($rawIds === '') {
-            $rawIds = (string) getenv('GROWSET_CATEGORY_IDS');
+            $rawIds = (string) (
+                getenv('GROWSET2_CATEGORY_IDS')
+                ?: getenv('GROWSET_CATEGORY_IDS')
+            );
         }
         $categoryIds = array_values(array_filter(array_map('intval', preg_split('/\s*,\s*/', (string) $rawIds, -1, PREG_SPLIT_NO_EMPTY))));
 

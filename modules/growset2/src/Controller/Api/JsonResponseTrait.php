@@ -1,6 +1,6 @@
 <?php
 
-namespace Growset\Controller\Api;
+namespace Growset2\Controller\Api;
 
 use Cache;
 

@@ -17,7 +17,7 @@ jobs:
 
       - name: Install PHP dependencies
         run: composer install
-        working-directory: modules/growset
+        working-directory: modules/growset2
 
       - name: Run PHPUnit
         run: |
@@ -26,7 +26,7 @@ jobs:
           else
             echo "phpunit not found, skipping"
           fi
-        working-directory: modules/growset
+        working-directory: modules/growset2
 
       - name: Lint PHP
         run: find modules -name "*.php" -print0 | xargs -0 -n1 php -l
@@ -54,4 +54,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: exported-assets
-          path: modules/growset/assets
+          path: modules/growset2/assets
