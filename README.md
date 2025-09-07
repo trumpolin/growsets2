@@ -19,8 +19,14 @@ The `docker-compose.yml` configuration uses specific image tags:
 
 ## Build
 
-- `cd frontend && npm run build:export`
-- Generated assets will be copied to `modules/growset2/assets`.
+Run the frontend build and export:
+
+```bash
+cd frontend
+npm run build:export
+```
+
+The generated assets are copied to `modules/growset2/assets`.
 
 ## Deployment
 
