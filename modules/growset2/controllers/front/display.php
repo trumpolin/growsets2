@@ -12,6 +12,8 @@ class Growset2DisplayModuleFrontController extends ModuleFrontController
     {
         parent::initContent();
         // Redirect to the exported frontend entry point.
-        Tools::redirect($this->module->getPathUri() . 'assets/index.html', null);
+        $url = $this->module->getPathUri() . 'assets/index.html';
+        header('Location: ' . $url, true, 302);
+        exit;
     }
 }
