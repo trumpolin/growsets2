@@ -3,13 +3,20 @@
 namespace Growset2;
 
 use Cache;
+use Category;
 use Configuration;
 use Module;
 use Tools;
 
 class Growset2 extends Module
 {
-    public const CONFIG_CATEGORY_IDS = 'GROWSET2_CATEGORY_IDS';
+    public const CONFIG_GROWBOX_CATEGORY = 'GROWSET2_GROWBOX_CATEGORY_ID';
+    public const CONFIG_GROWLED_CATEGORY = 'GROWSET2_GROWLED_CATEGORY_ID';
+    public const CONFIG_ABLUFT_VENTILATOR_CATEGORY = 'GROWSET2_ABLUFT_VENTILATOR_CATEGORY_ID';
+    public const CONFIG_AKTIVKOHLEFILTER_CATEGORY = 'GROWSET2_AKTIVKOHLEFILTER_CATEGORY_ID';
+    public const CONFIG_ABLUFTSCHLAUCH_CATEGORY = 'GROWSET2_ABLUFTSCHLAUCH_CATEGORY_ID';
+    public const CONFIG_UMLUFTVENTILATOR_CATEGORY = 'GROWSET2_UMLUFTVENTILATOR_CATEGORY_ID';
+    public const CONFIG_CONTROLLER_CATEGORY = 'GROWSET2_CONTROLLER_CATEGORY_ID';
     public const CONFIG_BACKEND_URL = 'GROWSET2_BACKEND_URL';
     public const CONFIG_TOKEN = 'GROWSET2_BACKEND_TOKEN';
 
@@ -37,7 +44,13 @@ class Growset2 extends Module
 
     public function uninstall()
     {
-        Configuration::deleteByName(self::CONFIG_CATEGORY_IDS);
+        Configuration::deleteByName(self::CONFIG_GROWBOX_CATEGORY);
+        Configuration::deleteByName(self::CONFIG_GROWLED_CATEGORY);
+        Configuration::deleteByName(self::CONFIG_ABLUFT_VENTILATOR_CATEGORY);
+        Configuration::deleteByName(self::CONFIG_AKTIVKOHLEFILTER_CATEGORY);
+        Configuration::deleteByName(self::CONFIG_ABLUFTSCHLAUCH_CATEGORY);
+        Configuration::deleteByName(self::CONFIG_UMLUFTVENTILATOR_CATEGORY);
+        Configuration::deleteByName(self::CONFIG_CONTROLLER_CATEGORY);
         Configuration::deleteByName(self::CONFIG_BACKEND_URL);
         Configuration::deleteByName(self::CONFIG_TOKEN);
 
@@ -48,9 +61,15 @@ class Growset2 extends Module
     {
         $output = '';
         if (Tools::isSubmit('submitGrowset2')) {
-            Configuration::updateValue(self::CONFIG_CATEGORY_IDS, Tools::getValue(self::CONFIG_CATEGORY_IDS));
-            Configuration::updateValue(self::CONFIG_BACKEND_URL, Tools::getValue(self::CONFIG_BACKEND_URL));
-            Configuration::updateValue(self::CONFIG_TOKEN, Tools::getValue(self::CONFIG_TOKEN));
+            $this->updateConfigValue(self::CONFIG_GROWBOX_CATEGORY);
+            $this->updateConfigValue(self::CONFIG_GROWLED_CATEGORY);
+            $this->updateConfigValue(self::CONFIG_ABLUFT_VENTILATOR_CATEGORY);
+            $this->updateConfigValue(self::CONFIG_AKTIVKOHLEFILTER_CATEGORY);
+            $this->updateConfigValue(self::CONFIG_ABLUFTSCHLAUCH_CATEGORY);
+            $this->updateConfigValue(self::CONFIG_UMLUFTVENTILATOR_CATEGORY);
+            $this->updateConfigValue(self::CONFIG_CONTROLLER_CATEGORY);
+            $this->updateConfigValue(self::CONFIG_BACKEND_URL);
+            $this->updateConfigValue(self::CONFIG_TOKEN);
             $output .= $this->displayConfirmation($this->l('Settings updated'));
         }
 
@@ -61,15 +80,139 @@ class Growset2 extends Module
     {
         $defaultLang = (int) Configuration::get('PS_LANG_DEFAULT');
 
-        $fieldsForm[0]['form'] = [
-            'legend' => ['title' => $this->l('Settings')],
-            'input' => [
-                [
-                    'type' => 'text',
-                    'label' => $this->l('Category IDs'),
-                    'name' => self::CONFIG_CATEGORY_IDS,
-                    'desc' => $this->l('Comma separated category identifiers'),
+        $categories = $this->getCategoryOptions($defaultLang);
+
+        $forms = [];
+
+        $forms[]['form'] = [
+            'legend' => ['title' => $this->l('Growbox')],
+            'input' => [[
+                'type' => 'select',
+                'label' => $this->l('Category'),
+                'name' => self::CONFIG_GROWBOX_CATEGORY,
+                'options' => [
+                    'query' => $categories,
+                    'id' => 'id_category',
+                    'name' => 'name',
                 ],
+            ]],
+            'submit' => [
+                'title' => $this->l('Save'),
+                'class' => 'btn btn-default pull-right',
+            ],
+        ];
+
+        $forms[]['form'] = [
+            'legend' => ['title' => $this->l('Grow LED')],
+            'input' => [[
+                'type' => 'select',
+                'label' => $this->l('Category'),
+                'name' => self::CONFIG_GROWLED_CATEGORY,
+                'options' => [
+                    'query' => $categories,
+                    'id' => 'id_category',
+                    'name' => 'name',
+                ],
+            ]],
+            'submit' => [
+                'title' => $this->l('Save'),
+                'class' => 'btn btn-default pull-right',
+            ],
+        ];
+
+        $forms[]['form'] = [
+            'legend' => ['title' => $this->l('Abluft Ventilator')],
+            'input' => [[
+                'type' => 'select',
+                'label' => $this->l('Category'),
+                'name' => self::CONFIG_ABLUFT_VENTILATOR_CATEGORY,
+                'options' => [
+                    'query' => $categories,
+                    'id' => 'id_category',
+                    'name' => 'name',
+                ],
+            ]],
+            'submit' => [
+                'title' => $this->l('Save'),
+                'class' => 'btn btn-default pull-right',
+            ],
+        ];
+
+        $forms[]['form'] = [
+            'legend' => ['title' => $this->l('Aaktivkohlefilter')],
+            'input' => [[
+                'type' => 'select',
+                'label' => $this->l('Category'),
+                'name' => self::CONFIG_AKTIVKOHLEFILTER_CATEGORY,
+                'options' => [
+                    'query' => $categories,
+                    'id' => 'id_category',
+                    'name' => 'name',
+                ],
+            ]],
+            'submit' => [
+                'title' => $this->l('Save'),
+                'class' => 'btn btn-default pull-right',
+            ],
+        ];
+
+        $forms[]['form'] = [
+            'legend' => ['title' => $this->l('Abluftschlauch')],
+            'input' => [[
+                'type' => 'select',
+                'label' => $this->l('Category'),
+                'name' => self::CONFIG_ABLUFTSCHLAUCH_CATEGORY,
+                'options' => [
+                    'query' => $categories,
+                    'id' => 'id_category',
+                    'name' => 'name',
+                ],
+            ]],
+            'submit' => [
+                'title' => $this->l('Save'),
+                'class' => 'btn btn-default pull-right',
+            ],
+        ];
+
+        $forms[]['form'] = [
+            'legend' => ['title' => $this->l('Umluftventilator')],
+            'input' => [[
+                'type' => 'select',
+                'label' => $this->l('Category'),
+                'name' => self::CONFIG_UMLUFTVENTILATOR_CATEGORY,
+                'options' => [
+                    'query' => $categories,
+                    'id' => 'id_category',
+                    'name' => 'name',
+                ],
+            ]],
+            'submit' => [
+                'title' => $this->l('Save'),
+                'class' => 'btn btn-default pull-right',
+            ],
+        ];
+
+        $forms[]['form'] = [
+            'legend' => ['title' => $this->l('Controller')],
+            'input' => [[
+                'type' => 'select',
+                'label' => $this->l('Category'),
+                'name' => self::CONFIG_CONTROLLER_CATEGORY,
+                'options' => [
+                    'query' => $categories,
+                    'id' => 'id_category',
+                    'name' => 'name',
+                ],
+            ]],
+            'submit' => [
+                'title' => $this->l('Save'),
+                'class' => 'btn btn-default pull-right',
+            ],
+        ];
+
+        $forms[]['form'] = [
+            'legend' => ['title' => $this->l('Backend Settings')],
+            'input' => [
                 [
                     'type' => 'text',
                     'label' => $this->l('Backend URL'),
@@ -95,9 +238,33 @@ class Growset2 extends Module
         $helper->token = \Tools::getAdminTokenLite('AdminModules');
         $helper->default_form_language = $defaultLang;
 
-        $helper->fields_value[self::CONFIG_CATEGORY_IDS] = $this->getConfigValue(
-            self::CONFIG_CATEGORY_IDS,
-            'GROWSET2_CATEGORY_IDS'
+        $helper->fields_value[self::CONFIG_GROWBOX_CATEGORY] = $this->getConfigValue(
+            self::CONFIG_GROWBOX_CATEGORY,
+            'GROWSET2_GROWBOX_CATEGORY_ID'
+        );
+        $helper->fields_value[self::CONFIG_GROWLED_CATEGORY] = $this->getConfigValue(
+            self::CONFIG_GROWLED_CATEGORY,
+            'GROWSET2_GROWLED_CATEGORY_ID'
+        );
+        $helper->fields_value[self::CONFIG_ABLUFT_VENTILATOR_CATEGORY] = $this->getConfigValue(
+            self::CONFIG_ABLUFT_VENTILATOR_CATEGORY,
+            'GROWSET2_ABLUFT_VENTILATOR_CATEGORY_ID'
+        );
+        $helper->fields_value[self::CONFIG_AKTIVKOHLEFILTER_CATEGORY] = $this->getConfigValue(
+            self::CONFIG_AKTIVKOHLEFILTER_CATEGORY,
+            'GROWSET2_AKTIVKOHLEFILTER_CATEGORY_ID'
+        );
+        $helper->fields_value[self::CONFIG_ABLUFTSCHLAUCH_CATEGORY] = $this->getConfigValue(
+            self::CONFIG_ABLUFTSCHLAUCH_CATEGORY,
+            'GROWSET2_ABLUFTSCHLAUCH_CATEGORY_ID'
+        );
+        $helper->fields_value[self::CONFIG_UMLUFTVENTILATOR_CATEGORY] = $this->getConfigValue(
+            self::CONFIG_UMLUFTVENTILATOR_CATEGORY,
+            'GROWSET2_UMLUFTVENTILATOR_CATEGORY_ID'
+        );
+        $helper->fields_value[self::CONFIG_CONTROLLER_CATEGORY] = $this->getConfigValue(
+            self::CONFIG_CONTROLLER_CATEGORY,
+            'GROWSET2_CONTROLLER_CATEGORY_ID'
         );
         $helper->fields_value[self::CONFIG_BACKEND_URL] = $this->getConfigValue(
             self::CONFIG_BACKEND_URL,
@@ -108,13 +275,44 @@ class Growset2 extends Module
             'GROWSET2_BACKEND_TOKEN'
         );
 
-        return $helper->generateForm($fieldsForm);
+        return $helper->generateForm($forms);
     }
 
     private function getConfigValue(string $key, string $envKey)
     {
         return Configuration::get($key)
             ?: getenv($envKey);
+    }
+
+    private function updateConfigValue(string $key): void
+    {
+        $value = Tools::getValue($key, null);
+        if ($value !== null) {
+            Configuration::updateValue($key, $value);
+        }
+    }
+
+    protected function getCategoryOptions(int $idLang): array
+    {
+        $tree = Category::getNestedCategories(null, $idLang, true);
+        $options = [];
+        $this->flattenCategories($tree, $options);
+        return $options;
+    }
+
+    private function flattenCategories(array $categories, array &$options, int $depth = 0): void
+    {
+        foreach ($categories as $category) {
+            $prefix = '|';
+            $prefix .= $depth === 0 ? '-' : str_repeat('---', $depth);
+            $options[] = [
+                'id_category' => $category['id_category'],
+                'name' => $prefix . $category['name'],
+            ];
+            if (!empty($category['children'])) {
+                $this->flattenCategories($category['children'], $options, $depth + 1);
+            }
+        }
     }
 
     private function clearProductCache(): void
