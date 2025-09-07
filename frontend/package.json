@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "build:export": "npm run build && cp -r out ../modules/growset2/assets",
+    "build:export": "npm run build && rm -rf ../modules/growset2/assets && mkdir -p ../modules/growset2/assets && rsync -a --delete out/ ../modules/growset2/assets/",
     "prepare": "cd .. && husky install",
     "test": "jest"
   },

@@ -19,14 +19,17 @@ The `docker-compose.yml` configuration uses specific image tags:
 
 ## Build
 
-Run the frontend build and export:
+Run the frontend build and export. This builds the Next.js frontend and
+synchronizes the exported files into the module's `assets` directory:
 
 ```bash
 cd frontend
 npm run build:export
 ```
 
-The generated assets are copied to `modules/growset2/assets`.
+The script clears any existing files in `modules/growset2/assets` and then
+uses `rsync` to copy the contents of the `out` directory. The module's front
+controller loads `assets/index.html` as the entry point.
 
 ## Deployment
 
