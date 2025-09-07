@@ -12,15 +12,7 @@ class ProductProvider
 {
     public function getProducts(int $page, int $limit): array
     {
-        $idLang = 1;
-        if (class_exists('Context')) {
-            $ctx = \Context::getContext();
-            if (isset($ctx->language) && isset($ctx->language->id)) {
-                $idLang = (int) $ctx->language->id;
-            }
-        } elseif (class_exists('Configuration')) {
-            $idLang = (int) Configuration::get('PS_LANG_DEFAULT', 1);
-        }
+        $idLang = $this->getLanguageId();
 
         $rawIds = '';
         if (class_exists('Configuration')) {
@@ -48,15 +40,7 @@ class ProductProvider
 
     public function getFilters(int $page, int $limit): array
     {
-        $idLang = 1;
-        if (class_exists('Context')) {
-            $ctx = \Context::getContext();
-            if (isset($ctx->language) && isset($ctx->language->id)) {
-                $idLang = (int) $ctx->language->id;
-            }
-        } elseif (class_exists('Configuration')) {
-            $idLang = (int) Configuration::get('PS_LANG_DEFAULT', 1);
-        }
+        $idLang = $this->getLanguageId();
 
         $features = Feature::getFeatures($idLang);
         $attributes = AttributeGroup::getAttributesGroups($idLang);
@@ -69,5 +53,20 @@ class ProductProvider
             'features' => $features,
             'attributes' => $attributes,
         ];
+    }
+
+    private function getLanguageId(): int
+    {
+        $idLang = 1;
+        if (class_exists('Context')) {
+            $ctx = \Context::getContext();
+            if (isset($ctx->language) && isset($ctx->language->id)) {
+                $idLang = (int) $ctx->language->id;
+            }
+        } elseif (class_exists('Configuration')) {
+            $idLang = (int) Configuration::get('PS_LANG_DEFAULT', 1);
+        }
+
+        return $idLang;
     }
 }
