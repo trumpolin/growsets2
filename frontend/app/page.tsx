@@ -1,4 +1,3 @@
-import Link from "next/link";
 import FacetPanel, { FacetPanelGroup } from "@/components/FacetPanel";
 
 export default function Home() {
@@ -11,12 +10,12 @@ export default function Home() {
             Growsets ist ein Projekt, das dir hilft, die passende Kombination
             aus Growbox, Beleuchtung und Belüftung zu finden.
           </p>
-          <Link
-            href="/configurator"
+          <a
+            href="configurator"
             className="inline-block rounded bg-secondary px-6 py-3 font-semibold text-white hover:bg-accent"
           >
             Zum Konfigurator
-          </Link>
+          </a>
         </div>
       </section>
 
