@@ -4,7 +4,7 @@ Thank you for considering contributing to Growsets.
 
 ## Development Setup
 
-- Backend: `cd modules/growset && composer install`
+- Backend: `cd modules/growset2 && composer install`
 - Frontend: `cd frontend && npm install`
 
 ## Code Style
@@ -16,7 +16,7 @@ Thank you for considering contributing to Growsets.
 
 Run tests before submitting a pull request:
 
-- `cd modules/growset && composer test`
+- `cd modules/growset2 && composer test`
 - `cd frontend && npm test`
 
 ## Commit Messages

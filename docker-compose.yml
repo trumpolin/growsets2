@@ -10,7 +10,7 @@ services:
       - DB_PASSWORD=prestashop
       - DB_NAME=prestashop
     volumes:
-      - ./modules/growset:/var/www/html/modules/growset
+      - ./modules/growset2:/var/www/html/modules/growset2
     depends_on:
       - mariadb
 
