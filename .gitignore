@@ -3,5 +3,5 @@
 
 frontend/node_modules/
 frontend/out/
-modules/growset/assets/
-modules/growset/.phpunit.result.cache
+modules/growset2/assets/
+modules/growset2/.phpunit.result.cache

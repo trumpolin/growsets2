@@ -1,19 +1,19 @@
 <?php return array(
     'root' => array(
-        'name' => 'growset/module',
+        'name' => 'growset2/module',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '8dc51dbfd97b606b19f11de8e7a41f9d5b72179d',
+        'reference' => '09581839b330c4b4aa20ff2e3289930f44bc5117',
         'type' => 'prestashop-module',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => false,
     ),
     'versions' => array(
-        'growset/module' => array(
+        'growset2/module' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '8dc51dbfd97b606b19f11de8e7a41f9d5b72179d',
+            'reference' => '09581839b330c4b4aa20ff2e3289930f44bc5117',
             'type' => 'prestashop-module',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

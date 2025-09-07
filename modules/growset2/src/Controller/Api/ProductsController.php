@@ -1,12 +1,12 @@
 <?php
 
-namespace Growset\Controller\Api;
+namespace Growset2\Controller\Api;
 
 use Cache;
-use Growset\Service\ProductProvider;
+use Growset2\Service\ProductProvider;
 use ModuleFrontController;
 use Tools;
-use Growset\Controller\Api\JsonResponseTrait;
+use Growset2\Controller\Api\JsonResponseTrait;
 
 class ProductsController extends ModuleFrontController
 {
@@ -26,7 +26,7 @@ class ProductsController extends ModuleFrontController
             echo json_encode(['error' => 'Invalid page or limit']);
             exit;
         }
-        $cacheKey = sprintf('growset_products_%d_%d', $page, $limit);
+        $cacheKey = sprintf('growset2_products_%d_%d', $page, $limit);
         $ttl = 300;
 
         $this->jsonResponse($cacheKey, $ttl, function () use ($page, $limit) {

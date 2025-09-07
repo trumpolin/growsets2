@@ -3,7 +3,7 @@
 ## Setup
 
 ### Backend Module
-1. `cd modules/growset`
+1. `cd modules/growset2`
 2. `composer install`
 
 ### Frontend
@@ -20,16 +20,16 @@ The `docker-compose.yml` configuration uses specific image tags:
 ## Build
 
 - `cd frontend && npm run build:export`
-- Generated assets will be copied to `modules/growset/assets`.
+- Generated assets will be copied to `modules/growset2/assets`.
 
 ## Deployment
 
-- Deploy the `modules/growset` directory into your PrestaShop installation.
+- Deploy the `modules/growset2` directory into your PrestaShop installation.
 - Optionally use `docker-compose up -d` for local development.
 
 ## Module Hooks
 
-The Growset module registers the following hooks:
+The Growset2 module registers the following hooks:
 
 - `actionProductAdd`
 - `actionProductUpdate`
@@ -56,7 +56,7 @@ php scripts/queue-worker.php
 ### Backend (PHPUnit)
 
 ```
-cd modules/growset
+cd modules/growset2
 composer test
 ```
 

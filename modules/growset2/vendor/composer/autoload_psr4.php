@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Growset\\' => array($baseDir . '/src'),
+    'Growset2\\' => array($baseDir . '/src'),
 );

@@ -1,6 +1,6 @@
 <?php
 spl_autoload_register(function ($class) {
-    $prefix = 'Growset\\';
+    $prefix = 'Growset2\\';
     $baseDir = __DIR__ . '/../src/';
     $len = strlen($prefix);
     if (strncmp($prefix, $class, $len) !== 0) {
