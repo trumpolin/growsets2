@@ -1,30 +1,30 @@
 <?php
 
-namespace Growset;
+namespace Growset2;
 
 use Cache;
 use Configuration;
 use Module;
 use Tools;
 
-class Growset extends Module
+class Growset2 extends Module
 {
-    public const CONFIG_CATEGORY_IDS = 'GROWSET_CATEGORY_IDS';
-    public const CONFIG_BACKEND_URL = 'GROWSET_BACKEND_URL';
-    public const CONFIG_TOKEN = 'GROWSET_BACKEND_TOKEN';
+    public const CONFIG_CATEGORY_IDS = 'GROWSET2_CATEGORY_IDS';
+    public const CONFIG_BACKEND_URL = 'GROWSET2_BACKEND_URL';
+    public const CONFIG_TOKEN = 'GROWSET2_BACKEND_TOKEN';
 
     public function __construct()
     {
-        $this->name = 'growset';
+        $this->name = 'growset2';
         $this->tab = 'administration';
         $this->version = '1.0.0';
-        $this->author = 'Growset';
+        $this->author = 'Growset2';
         $this->need_instance = 0;
 
         parent::__construct();
 
-        $this->displayName = $this->l('Growset');
-        $this->description = $this->l('Synchronizes products with the Growset backend.');
+        $this->displayName = $this->l('Growset2');
+        $this->description = $this->l('Synchronizes products with the Growset2 backend.');
     }
 
     public function install()
@@ -47,7 +47,7 @@ class Growset extends Module
     public function getContent()
     {
         $output = '';
-        if (Tools::isSubmit('submitGrowset')) {
+        if (Tools::isSubmit('submitGrowset2')) {
             Configuration::updateValue(self::CONFIG_CATEGORY_IDS, Tools::getValue(self::CONFIG_CATEGORY_IDS));
             Configuration::updateValue(self::CONFIG_BACKEND_URL, Tools::getValue(self::CONFIG_BACKEND_URL));
             Configuration::updateValue(self::CONFIG_TOKEN, Tools::getValue(self::CONFIG_TOKEN));
@@ -90,21 +90,21 @@ class Growset extends Module
         $helper = new \HelperForm();
         $helper->module = $this;
         $helper->identifier = $this->identifier;
-        $helper->submit_action = 'submitGrowset';
+        $helper->submit_action = 'submitGrowset2';
         $helper->currentIndex = \AdminController::$currentIndex . '&configure=' . $this->name;
         $helper->token = \Tools::getAdminTokenLite('AdminModules');
         $helper->default_form_language = $defaultLang;
 
-        $helper->fields_value[self::CONFIG_CATEGORY_IDS] = Configuration::get(self::CONFIG_CATEGORY_IDS) ?: getenv('GROWSET_CATEGORY_IDS');
-        $helper->fields_value[self::CONFIG_BACKEND_URL] = Configuration::get(self::CONFIG_BACKEND_URL) ?: getenv('GROWSET_BACKEND_URL');
-        $helper->fields_value[self::CONFIG_TOKEN] = Configuration::get(self::CONFIG_TOKEN) ?: getenv('GROWSET_BACKEND_TOKEN');
+        $helper->fields_value[self::CONFIG_CATEGORY_IDS] = Configuration::get(self::CONFIG_CATEGORY_IDS) ?: getenv('GROWSET2_CATEGORY_IDS');
+        $helper->fields_value[self::CONFIG_BACKEND_URL] = Configuration::get(self::CONFIG_BACKEND_URL) ?: getenv('GROWSET2_BACKEND_URL');
+        $helper->fields_value[self::CONFIG_TOKEN] = Configuration::get(self::CONFIG_TOKEN) ?: getenv('GROWSET2_BACKEND_TOKEN');
 
         return $helper->generateForm($fieldsForm);
     }
 
     private function clearProductCache(): void
     {
-        Cache::clean('growset_products');
+        Cache::clean('growset2_products');
     }
 
     public function hookActionProductAdd($params)

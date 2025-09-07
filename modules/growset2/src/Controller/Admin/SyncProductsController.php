@@ -1,6 +1,6 @@
 <?php
 
-namespace Growset\Controller\Admin;
+namespace Growset2\Controller\Admin;
 
 use ModuleAdminController;
 use Symfony\Component\Process\Process;
@@ -20,7 +20,7 @@ class SyncProductsController extends ModuleAdminController
     protected function executeSync(): void
     {
         $console = _PS_ROOT_DIR_ . '/bin/console';
-        $process = new Process(['php', $console, 'growset:sync']);
+        $process = new Process(['php', $console, 'growset2:sync']);
         $process->setTimeout(null);
         $process->disableOutput();
 

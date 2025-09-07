@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <phpunit bootstrap="tests/bootstrap.php" colors="true">
     <testsuites>
-        <testsuite name="Growset Test Suite">
+        <testsuite name="Growset2 Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

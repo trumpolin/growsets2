@@ -22,7 +22,7 @@ class Cache
     }
 }
 
-use Growset\Growset;
+use Growset2\Growset2;
 use PHPUnit\Framework\TestCase;
 
 class GrowsetTest extends TestCase
@@ -34,25 +34,25 @@ class GrowsetTest extends TestCase
 
     public function testAddHookClearsCache(): void
     {
-        $module = new Growset();
+        $module = new Growset2();
         $module->hookActionProductAdd([]);
 
-        $this->assertSame(['growset_products'], Cache::$keys);
+        $this->assertSame(['growset2_products'], Cache::$keys);
     }
 
     public function testUpdateHookClearsCache(): void
     {
-        $module = new Growset();
+        $module = new Growset2();
         $module->hookActionProductUpdate([]);
 
-        $this->assertSame(['growset_products'], Cache::$keys);
+        $this->assertSame(['growset2_products'], Cache::$keys);
     }
 
     public function testDeleteHookClearsCache(): void
     {
-        $module = new Growset();
+        $module = new Growset2();
         $module->hookActionProductDelete([]);
 
-        $this->assertSame(['growset_products'], Cache::$keys);
+        $this->assertSame(['growset2_products'], Cache::$keys);
     }
 }
