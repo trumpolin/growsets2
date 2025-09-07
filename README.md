@@ -27,6 +27,8 @@ npm run build:export
 ```
 
 The generated assets are copied to `modules/growset2/assets`.
+Commit the updated assets; the CI pipeline rebuilds and fails if this directory
+differs from the freshly generated output.
 
 ## Deployment
 

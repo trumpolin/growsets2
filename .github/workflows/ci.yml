@@ -46,9 +46,14 @@ jobs:
         run: npm run lint
         working-directory: frontend
 
-      - name: Build and export
-        run: npm run build:export
-        working-directory: frontend
+      - name: Verify exported assets
+        run: |
+          npm --prefix frontend run build:export
+          if [ -n "$(git status --porcelain modules/growset2/assets)" ]; then
+            echo 'modules/growset2/assets is out of date. Run npm run build:export and commit the results.'
+            git status --porcelain modules/growset2/assets
+            exit 1
+          fi
 
       - name: Upload exported assets
         uses: actions/upload-artifact@v4
