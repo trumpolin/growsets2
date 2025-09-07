@@ -7,7 +7,6 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "module": "npm run build && cp -r out ../modules/growset2/assets",
     "build:export": "npm run build && cp -r out ../modules/growset2/assets",
     "prepare": "cd .. && husky install",
     "test": "jest"
