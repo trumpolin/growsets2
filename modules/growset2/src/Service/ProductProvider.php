@@ -14,14 +14,37 @@ class ProductProvider
     {
         $idLang = $this->getLanguageId();
 
-        $rawIds = '';
-        if (class_exists('Configuration')) {
-            $rawIds = (string) Configuration::get(Growset2::CONFIG_CATEGORY_IDS);
+        $keys = [
+            Growset2::CONFIG_GROWBOX_CATEGORY,
+            Growset2::CONFIG_GROWLED_CATEGORY,
+            Growset2::CONFIG_ABLUFT_VENTILATOR_CATEGORY,
+            Growset2::CONFIG_AKTIVKOHLEFILTER_CATEGORY,
+            Growset2::CONFIG_ABLUFTSCHLAUCH_CATEGORY,
+            Growset2::CONFIG_UMLUFTVENTILATOR_CATEGORY,
+            Growset2::CONFIG_CONTROLLER_CATEGORY,
+        ];
+
+        $categoryIds = [];
+        foreach ($keys as $key) {
+            $id = 0;
+            if (class_exists('Configuration')) {
+                $id = (int) Configuration::get($key);
+            }
+            if ($id <= 0) {
+                $id = (int) getenv($key);
+            }
+            if ($id > 0) {
+                $categoryIds[] = $id;
+            }
         }
-        if ($rawIds === '') {
+        $categoryIds = array_values(array_unique($categoryIds));
+
+        if (empty($categoryIds)) {
             $rawIds = (string) getenv('GROWSET2_CATEGORY_IDS');
+            if ($rawIds !== '') {
+                $categoryIds = array_values(array_filter(array_map('intval', preg_split('/\s*,\s*/', $rawIds, -1, PREG_SPLIT_NO_EMPTY))));
+            }
         }
-        $categoryIds = array_values(array_filter(array_map('intval', preg_split('/\s*,\s*/', (string) $rawIds, -1, PREG_SPLIT_NO_EMPTY))));
 
         if (empty($categoryIds)) {
             $start = max(0, ($page - 1) * $limit);
