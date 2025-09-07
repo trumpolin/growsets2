@@ -25,7 +25,7 @@ class Cache
 use Growset2\Growset2;
 use PHPUnit\Framework\TestCase;
 
-class GrowsetTest extends TestCase
+class Growset2Test extends TestCase
 {
     protected function setUp(): void
     {
