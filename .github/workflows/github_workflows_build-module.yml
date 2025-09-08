@@ -27,10 +27,10 @@ jobs:
           tools: composer
 
       # Dependencies installieren (wenn nötig)
-      # - name: Install dependencies
-      #   run: npm install
-      # - name: Build assets
-      #   run: npm run build
+      - name: Install dependencies
+        run: npm install
+      - name: Build assets
+        run: npm run build
 
       # ZIP-Archiv vom Modulordner erstellen
       - name: Pack module folder
