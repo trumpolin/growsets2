@@ -5,7 +5,7 @@ import QueryProvider from "@/components/QueryProvider";
 
 export const metadata: Metadata = {
   title: "Growsets",
-  description: "Komplettset Konfigurator",
+  description: "Komplett Konfigurator",
 };
 
 export default function RootLayout({
@@ -21,9 +21,7 @@ export default function RootLayout({
             <div className="flex min-h-screen flex-col">
               <header className="bg-primary text-white">
                 <div className="container mx-auto p-4">
-                  <div className="text-xl font-bold">
-                    Komplettset Konfigurator
-                  </div>
+                  <div className="text-xl font-bold">Komplett Konfigurator</div>
                 </div>
               </header>
               <main className="container mx-auto flex-grow p-4">
