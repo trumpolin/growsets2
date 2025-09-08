@@ -67,6 +67,40 @@ class ProductProvider
         return array_slice($products, $start, $limit);
     }
 
+    public function getCategoryArticles(int $categoryId, int $page, int $limit, ?int $relatedId = null): array
+    {
+        $idLang = $this->getLanguageId();
+
+        $products = Product::getProducts($idLang, 0, 0, 'id_product', 'ASC');
+        $products = array_values(array_filter($products, function (array $product) use ($categoryId, $relatedId) {
+            if ($relatedId !== null && (int) $product['id_product'] === $relatedId) {
+                return false;
+            }
+            $categories = Product::getProductCategories((int) $product['id_product']);
+            return in_array($categoryId, $categories);
+        }));
+
+        $total = count($products);
+        $start = max(0, ($page - 1) * $limit);
+        $slice = array_slice($products, $start, $limit);
+
+        $items = array_map(function (array $product) {
+            return [
+                'id' => (string) $product['id_product'],
+                'title' => $product['name'] ?? '',
+                'description' => $product['description_short'] ?? '',
+                'image' => $product['image'] ?? null,
+                'price' => isset($product['price']) ? (float) $product['price'] : null,
+            ];
+        }, $slice);
+
+        return [
+            'items' => $items,
+            'page' => $page,
+            'totalPages' => $limit > 0 ? (int) ceil($total / $limit) : 0,
+        ];
+    }
+
     public function getFilters(int $page, int $limit): array
     {
         $idLang = $this->getLanguageId();

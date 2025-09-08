@@ -49,6 +49,11 @@ class Product
     {
         return [['id_product' => 1]];
     }
+
+    public static function getProductCategories($idProduct)
+    {
+        return [1];
+    }
 }
 
 class Feature
