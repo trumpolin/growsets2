@@ -1,0 +1,44 @@
+name: Build PrestaShop Module
+
+on:
+  push:
+    branches:
+      - main  # nach jedem Merge auf main
+
+jobs:
+  build-module:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Optional: Node.js installieren, falls du npm brauchst
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Optional: PHP-Tools installieren (composer, etc.)
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+
+      # Dependencies installieren (wenn nötig)
+      # - name: Install dependencies
+      #   run: npm install
+      # - name: Build assets
+      #   run: npm run build
+
+      # ZIP-Archiv vom Modulordner erstellen
+      - name: Pack module folder
+        run: zip -r module.zip path/to/deinmodul/
+
+      # ZIP als Artifact bereitstellen
+      - name: Upload module zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: presta-module
+          path: module.zip
