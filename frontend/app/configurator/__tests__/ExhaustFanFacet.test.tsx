@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import FanFacet from "@/app/configurator/FanFacet";
+import ExhaustFanFacet from "@/app/configurator/ExhaustFanFacet";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchCategoryArticles } from "@/lib/api";
 import { useSelection } from "@/components/SelectionProvider";
@@ -16,10 +16,10 @@ jest.mock("@/lib/api", () => ({
   fetchCategoryArticles: jest.fn(),
 }));
 
-describe("FanFacet", () => {
-  it("fetches fan articles", () => {
+describe("ExhaustFanFacet", () => {
+  it("fetches exhaust fan articles", () => {
     (useSelection as jest.Mock).mockReturnValue({
-      selections: { fan: null },
+      selections: { exhaustFan: null },
       setSelection: jest.fn(),
     });
     (useInfiniteQuery as jest.Mock).mockReturnValue({
@@ -29,11 +29,16 @@ describe("FanFacet", () => {
       isFetchingNextPage: false,
     });
 
-    render(<FanFacet />);
+    render(<ExhaustFanFacet />);
 
     const options = (useInfiniteQuery as jest.Mock).mock.calls[0][0];
-    expect(options.queryKey).toEqual(["fanArticles"]);
+    expect(options.queryKey).toEqual(["exhaustFanArticles"]);
     options.queryFn({ pageParam: 1 });
-    expect(fetchCategoryArticles).toHaveBeenCalledWith("fan", 1, 10, undefined);
+    expect(fetchCategoryArticles).toHaveBeenCalledWith(
+      "exhaust-fan",
+      1,
+      10,
+      undefined,
+    );
   });
 });

@@ -4,6 +4,8 @@ interface Article {
   id: string;
   title: string;
   description?: string;
+  image?: string;
+  price?: number;
 }
 
 export default function ArticleListItem({
@@ -16,8 +18,15 @@ export default function ArticleListItem({
   onToggle?: (id: string) => void;
 }) {
   return (
-    <li className="rounded border p-2 hover:bg-gray-50">
-      <div className="flex items-center justify-between">
+    <li className="rounded-lg border p-3 hover:bg-gray-50">
+      <div className="flex items-center gap-4">
+        {article.image && (
+          <img
+            src={article.image}
+            alt={article.title}
+            className="h-16 w-16 rounded object-cover"
+          />
+        )}
         <div
           className="flex-1 cursor-pointer"
           onClick={() => onToggle?.(article.id)}
@@ -27,11 +36,14 @@ export default function ArticleListItem({
             <p className="text-sm text-gray-600">{article.description}</p>
           )}
         </div>
+        {article.price !== undefined && (
+          <span className="font-semibold">{article.price} €</span>
+        )}
         <button
-          className="ml-2 rounded bg-green-500 px-2 py-1 text-sm text-white"
+          className="ml-2 rounded bg-green-500 px-3 py-1 text-sm text-white"
           onClick={() => onToggle?.(article.id)}
         >
-          {selected ? "Im Set" : "Ins Set"}
+          {selected ? "Im Set" : "In's Set"}
         </button>
       </div>
     </li>
