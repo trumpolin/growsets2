@@ -13,4 +13,9 @@ describe("ArticleListItem", () => {
     expect(screen.getByText("10 €")).toBeInTheDocument();
     expect(screen.getByText("In's Set")).toBeInTheDocument();
   });
+
+  it("hides action button when no onToggle provided", () => {
+    render(<ArticleListItem article={{ id: "1", title: "My Article" }} />);
+    expect(screen.queryByText("In's Set")).not.toBeInTheDocument();
+  });
 });

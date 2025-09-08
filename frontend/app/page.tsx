@@ -1,4 +1,5 @@
-import FacetPanel, { FacetPanelGroup } from "@/components/FacetPanel";
+import { FacetPanelGroup } from "@/components/FacetPanel";
+import CategoryPanel from "@/components/CategoryPanel";
 
 export default function Home() {
   return (
@@ -20,55 +21,18 @@ export default function Home() {
       </section>
 
       <section className="container mx-auto my-18 px-4">
-        <h2 className="mb-4 text-2xl font-semibold text-primary">
-          Beispiel‑Panels
-        </h2>
-
+        <h2 className="mb-4 text-2xl font-semibold text-primary">Produkte</h2>
         <FacetPanelGroup>
-          <FacetPanel id="demo1" title="Neue Produkte">
-            <ul className="divide-y">
-              <li className="flex items-center gap-4 py-2">
-                <img
-                  src="/sample1.jpg"
-                  alt="Produkt 1"
-                  className="h-20 w-20 rounded object-cover"
-                />
-                <div>
-                  <h3 className="font-medium">Produktname 1</h3>
-                  <p className="text-sm text-gray-600">
-                    Kurzbeschreibung des Produkts.
-                  </p>
-                  <span className="font-bold">€ 0,00</span>
-                </div>
-              </li>
-
-              <li className="flex items-center gap-4 py-2">
-                <img
-                  src="/sample2.jpg"
-                  alt="Produkt 2"
-                  className="h-20 w-20 rounded object-cover"
-                />
-                <div>
-                  <h3 className="font-medium">Produktname 2</h3>
-                  <p className="text-sm text-gray-600">
-                    Kurzbeschreibung des Produkts.
-                  </p>
-                  <span className="font-bold">€ 0,00</span>
-                </div>
-              </li>
-            </ul>
-          </FacetPanel>
-
-          <FacetPanel
-            id="demo2"
-            title="Beliebt"
-            selectedItems={["Alpha", "Beta"]}
-          >
-            <p className="text-sm">
-              Weitere Inhalte oder Filteroptionen können hier eingeblendet
-              werden.
-            </p>
-          </FacetPanel>
+          <CategoryPanel category="growbox" title="Growbox" />
+          <CategoryPanel category="growled" title="Grow LED" />
+          <CategoryPanel
+            category="abluft-ventilator"
+            title="Abluft Ventilator"
+          />
+          <CategoryPanel category="aktivkohlefilter" title="Aktivkohlefilter" />
+          <CategoryPanel category="abluftschlauch" title="Abluftschlauch" />
+          <CategoryPanel category="umluftventilator" title="Umluftventilator" />
+          <CategoryPanel category="controller" title="Controller" />
         </FacetPanelGroup>
       </section>
     </>

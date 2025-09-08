@@ -39,12 +39,14 @@ export default function ArticleListItem({
         {article.price !== undefined && (
           <span className="font-semibold">{article.price} €</span>
         )}
-        <button
-          className="ml-2 rounded bg-green-500 px-3 py-1 text-sm text-white"
-          onClick={() => onToggle?.(article.id)}
-        >
-          {selected ? "Im Set" : "In's Set"}
-        </button>
+        {onToggle && (
+          <button
+            className="ml-2 rounded bg-green-500 px-3 py-1 text-sm text-white"
+            onClick={() => onToggle(article.id)}
+          >
+            {selected ? "Im Set" : "In's Set"}
+          </button>
+        )}
       </div>
     </li>
   );
