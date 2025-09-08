@@ -27,7 +27,7 @@ export default function FacetPanel({
         onClick={() => setOpen((o) => !o)}
       >
         <span>{title}</span>
-        <span>{open ? "-" : "+"}</span>
+        <span>{open ? "↑" : "↓"}</span>
       </button>
       {open ? (
         <div className="p-4">{children}</div>
