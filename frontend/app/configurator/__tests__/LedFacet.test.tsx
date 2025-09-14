@@ -18,6 +18,7 @@ jest.mock("@/lib/api", () => ({
 
 describe("LedFacet", () => {
   it("filters LEDs by selected growbox", () => {
+    process.env.NEXT_PUBLIC_LED_CATEGORY_ID = "1";
     (useSelection as jest.Mock).mockReturnValue({
       selections: { growbox: "g1", led: null },
       setSelection: jest.fn(),
@@ -35,7 +36,7 @@ describe("LedFacet", () => {
     expect(options.queryKey).toEqual(["ledArticles", "g1"]);
     options.queryFn({ pageParam: 1 });
     expect(fetchCategoryArticles).toHaveBeenCalledWith(
-      "led",
+      "1",
       1,
       10,
       undefined,

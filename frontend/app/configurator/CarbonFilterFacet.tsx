@@ -2,9 +2,10 @@
 import ArticleFacet from "./ArticleFacet";
 
 export default function CarbonFilterFacet() {
+  const category = process.env.NEXT_PUBLIC_CARBON_FILTER_CATEGORY_ID || "";
   return (
     <ArticleFacet
-      category="carbon-filter"
+      category={category}
       selectionKey="carbonFilter"
       title="Aktivkohlefilter"
       queryKey={["carbonFilterArticles"]}

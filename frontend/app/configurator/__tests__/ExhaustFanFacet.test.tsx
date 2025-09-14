@@ -18,6 +18,7 @@ jest.mock("@/lib/api", () => ({
 
 describe("ExhaustFanFacet", () => {
   it("fetches exhaust fan articles", () => {
+    process.env.NEXT_PUBLIC_EXHAUST_FAN_CATEGORY_ID = "2";
     (useSelection as jest.Mock).mockReturnValue({
       selections: { exhaustFan: null },
       setSelection: jest.fn(),
@@ -34,11 +35,6 @@ describe("ExhaustFanFacet", () => {
     const options = (useInfiniteQuery as jest.Mock).mock.calls[0][0];
     expect(options.queryKey).toEqual(["exhaustFanArticles"]);
     options.queryFn({ pageParam: 1 });
-    expect(fetchCategoryArticles).toHaveBeenCalledWith(
-      "exhaust-fan",
-      1,
-      10,
-      undefined,
-    );
+    expect(fetchCategoryArticles).toHaveBeenCalledWith("2", 1, 10, undefined);
   });
 });
